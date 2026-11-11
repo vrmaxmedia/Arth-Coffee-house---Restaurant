@@ -16,7 +16,7 @@ const CLIENT_CONFIG = {
   cleanPhone: "918840752487",
   logoUrl: "/logo.png",
   // TODO: Google Business Profile ka Place ID daalo (placeid=... wali jagah)
-  googleReviewUrl: "https://search.google.com/local/writereview?placeid=PASTE_PLACE_ID_HERE",
+  googleReviewUrl: "https://search.google.com/local/writereview?placeid=ChIJJ5zAsQUrCTkRHeW9xjig03I",
   // TODO: client ka short maps link mile to isse replace kar do
   mapsDirectionUrl:
     "https://www.google.com/maps/search/?api=1&query=Arth+Coffee+House+Tulsi+Tower+Bharuwala+Colony+Clement+Town+Dehradun",
