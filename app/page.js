@@ -11,19 +11,18 @@ const CLIENT_CONFIG = {
   description:
     "Aesthetic coffee house and restaurant in Clement Town, Dehradun serving freshly brewed coffee, wood-fired pizza, momos, pasta, Korean ramen, burgers, thick shakes and desserts, with a cozy warm ambience, happy hours, student offers and party options.",
   city: "Clement Town, Dehradun",
-  fullAddress: "Tulsi Tower, Bharuwala Colony, Clement Town, Dehradun, Uttarakhand 248001",
+  fullAddress:
+    "Tulsi Tower, Bharuwala Colony, Clement Town, Dehradun, Uttarakhand 248001",
   phone: "+918840752487",
   cleanPhone: "918840752487",
   logoUrl: "/logo.png",
-  // TODO: Google Business Profile ka Place ID daalo (placeid=... wali jagah)
-  googleReviewUrl: "https://search.google.com/local/writereview?placeid=ChIJJ5zAsQUrCTkRHeW9xjig03I",
-  // TODO: client ka short maps link mile to isse replace kar do
+  googleReviewUrl:
+    "https://search.google.com/local/writereview?placeid=ChIJJ5zAsQUrCTkRHeW9xjig03I",
   mapsDirectionUrl:
     "https://www.google.com/maps/search/?api=1&query=Arth+Coffee+House+Tulsi+Tower+Bharuwala+Colony+Clement+Town+Dehradun",
   instagramUrl: "https://www.instagram.com/arthcoffeehouse",
   facebookUrl: "https://www.facebook.com/arthcoffeehouse",
   websiteUrl: "https://www.arthcoffeehouse.co.in/",
-  // Neeche ke dono khali hain, link milte hi daal dena to icon apne aap dikhne lagega
   youtubeUrl: "",
   whatsappChannelUrl: "",
   agencyName: "VR Max AI",
@@ -31,19 +30,48 @@ const CLIENT_CONFIG = {
   agencyPhoneDisplay: "+91 87006 60097",
   customInstruction:
     "You are an authentic local customer writing an unscripted Google Maps review for Arth Coffee House & Restaurant in Clement Town, Dehradun. Write like a real human speaking straight from the heart. Talk about the coffee, food, ambience, staff and value for money in a natural way. Mention menu items organically (e.g. latte, mocha, pizza, momos, pasta, Korean ramen, Biscoff shake, mojito). Strictly DO NOT use full stops (.) at the end of sentences. Vary lengths completely randomly (some 1-line quick reviews, some 2-line, some 3-4 lines detailed). Never use robotic or repetitive openings.",
-  // NOTE: chip labels route.js ke CHIPS se bilkul match hone chahiye ("All" ke alawa)
   chips: [
     { label: "All", context: "overall cafe experience" },
-    { label: "Cozy Ambience", context: "cozy aesthetic ambience with warm lighting and calm vibe" },
-    { label: "Great Coffee", context: "freshly brewed coffee with rich aroma and taste" },
-    { label: "Tasty Food", context: "fresh, tasty food that came hot" },
-    { label: "Signature Dishes", context: "any dish from the menu like pizza, momos, pasta, ramen, shakes" },
-    { label: "Value for Money", context: "reasonable prices, worth the money, no hidden charges" },
-    { label: "Friendly Staff", context: "polite and friendly staff, no pressure" },
-    { label: "Clean & Hygienic", context: "clean tables, neat and hygienic place" },
-    { label: "Quick Service", context: "order came on time, no long waiting" },
-    { label: "Party & Events", context: "small party or celebration with good arrangement" },
-    { label: "Clement Town", context: "easy to find cafe in Clement Town, Dehradun" },
+    {
+      label: "Cozy Ambience",
+      context: "cozy aesthetic ambience with warm lighting and calm vibe",
+    },
+    {
+      label: "Great Coffee",
+      context: "freshly brewed coffee with rich aroma and taste",
+    },
+    {
+      label: "Tasty Food",
+      context: "fresh, tasty food that came hot",
+    },
+    {
+      label: "Signature Dishes",
+      context: "any dish from the menu like pizza, momos, pasta, ramen, shakes",
+    },
+    {
+      label: "Value for Money",
+      context: "reasonable prices, worth the money, no hidden charges",
+    },
+    {
+      label: "Friendly Staff",
+      context: "polite and friendly staff, no pressure",
+    },
+    {
+      label: "Clean & Hygienic",
+      context: "clean tables, neat and hygienic place",
+    },
+    {
+      label: "Quick Service",
+      context: "order came on time, no long waiting",
+    },
+    {
+      label: "Party & Events",
+      context: "small party or celebration with good arrangement",
+    },
+    {
+      label: "Clement Town",
+      context: "easy to find cafe in Clement Town, Dehradun",
+    },
   ],
 };
 
@@ -51,7 +79,9 @@ const MAP_EMBED_URL = `https://www.google.com/maps?q=${encodeURIComponent(
   `${CLIENT_CONFIG.businessName}, ${CLIENT_CONFIG.fullAddress}`
 )}&output=embed`;
 
-const AGENCY_WA_LINK = `https://wa.me/${CLIENT_CONFIG.agencyWhatsapp}?text=${encodeURIComponent(
+const AGENCY_WA_LINK = `https://wa.me/${
+  CLIENT_CONFIG.agencyWhatsapp
+}?text=${encodeURIComponent(
   "Hi VR Max AI, I want to get a QR review system for my business."
 )}`;
 
@@ -104,6 +134,7 @@ function useTypewriter(fullText, totalMs = 2300) {
     };
 
     raf = requestAnimationFrame(tick);
+
     return () => cancelAnimationFrame(raf);
   }, [fullText, totalMs]);
 
@@ -129,8 +160,10 @@ async function copyToClipboard(text) {
     document.body.appendChild(ta);
     ta.select();
     ta.setSelectionRange(0, text.length);
+
     const ok = document.execCommand("copy");
     ta.remove();
+
     return ok;
   } catch (e) {
     return false;
@@ -150,6 +183,7 @@ export default function UniversalReviewPage() {
   const abortControllerRef = useRef(null);
   const requestIdRef = useRef(0);
   const recentLengthsRef = useRef([]);
+
   const { displayText, isTyping } = useTypewriter(reviewDraft);
 
   useEffect(() => {
@@ -166,6 +200,7 @@ export default function UniversalReviewPage() {
 
     const controller = new AbortController();
     abortControllerRef.current = controller;
+
     const requestId = ++requestIdRef.current;
 
     setLoading(true);
@@ -200,7 +235,9 @@ export default function UniversalReviewPage() {
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {
-        throw new Error(data.error || `Draft generation failed (${res.status}).`);
+        throw new Error(
+          data.error || `Draft generation failed (${res.status}).`
+        );
       }
 
       if (!data.review?.trim()) {
@@ -266,7 +303,10 @@ export default function UniversalReviewPage() {
       next = next.filter((l) => l !== chipObj.label);
     } else {
       next = [...next, chipObj.label];
-      if (next.length > 3) next = next.slice(-3);
+
+      if (next.length > 3) {
+        next = next.slice(-3);
+      }
     }
 
     setSelectedLabels(next.length ? next : ["All"]);
@@ -287,7 +327,9 @@ export default function UniversalReviewPage() {
     const ok = await copyToClipboard(reviewDraft);
 
     if (!ok) {
-      setError("Could not copy the draft. Please select and copy it manually.");
+      setError(
+        "Could not copy the draft. Please select and copy it manually."
+      );
       return;
     }
 
@@ -321,6 +363,7 @@ END:VCARD`;
     document.body.appendChild(link);
     link.click();
     link.remove();
+
     URL.revokeObjectURL(url);
   }
 
@@ -337,10 +380,12 @@ END:VCARD`;
 
   return (
     <main className="soft-luxury-viewport">
+
       {/* Fixed Background Image */}
       <div className="fixed-bg"></div>
 
       <div className="main-content-flow">
+
         {/* Logo */}
         <div className="brand-medallion-badge">
           <div
@@ -389,6 +434,7 @@ END:VCARD`;
                 key={chip.label}
                 type="button"
                 onClick={() => handleChipChange(chip)}
+                aria-pressed={active}
                 className={`embossed-pill ${active ? "active" : ""}`}
               >
                 {chip.label}
@@ -411,6 +457,7 @@ END:VCARD`;
                 key={lang}
                 type="button"
                 onClick={() => handleLanguageChange(lang)}
+                aria-pressed={active}
                 className={`capsule-lang-btn ${active ? "active" : ""}`}
               >
                 {lang}
@@ -421,6 +468,7 @@ END:VCARD`;
 
         {/* Review Box */}
         <div className="signature-review-box">
+
           <div className="box-top-ribbon">
             <div className="label-badge">
               <span className="dot-ping"></span>
@@ -486,7 +534,9 @@ END:VCARD`;
         {/* Quick Actions */}
         <div className="quick-actions-card">
           <div className="soft-action-grid">
+
             <div className="action-row-upper">
+
               {/* WhatsApp */}
               <a
                 href={`https://wa.me/${CLIENT_CONFIG.cleanPhone}`}
@@ -495,7 +545,14 @@ END:VCARD`;
                 className="soft-circle-action"
               >
                 <div className="icon-disc whatsapp-disc">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
                   </svg>
                 </div>
@@ -503,9 +560,19 @@ END:VCARD`;
               </a>
 
               {/* Call Us */}
-              <a href={`tel:${CLIENT_CONFIG.phone}`} className="soft-circle-action">
+              <a
+                href={`tel:${CLIENT_CONFIG.phone}`}
+                className="soft-circle-action"
+              >
                 <div className="icon-disc call-disc">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
                   </svg>
                 </div>
@@ -519,7 +586,14 @@ END:VCARD`;
                 className="soft-circle-action"
               >
                 <div className="icon-disc contact-disc">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
                     <circle cx="8.5" cy="7" r="4" />
                     <line x1="20" y1="8" x2="20" y2="14" />
@@ -537,16 +611,25 @@ END:VCARD`;
                 className="soft-circle-action"
               >
                 <div className="icon-disc map-disc">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
                     <circle cx="12" cy="10" r="3" />
                   </svg>
                 </div>
                 <span className="icon-tag">Directions</span>
               </a>
+
             </div>
 
             <div className="action-row-lower">
+
               {/* Instagram */}
               {CLIENT_CONFIG.instagramUrl && (
                 <a
@@ -556,7 +639,14 @@ END:VCARD`;
                   className="soft-circle-action"
                 >
                   <div className="icon-disc insta-disc">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
                       <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
                       <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
                       <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
@@ -575,7 +665,14 @@ END:VCARD`;
                   className="soft-circle-action"
                 >
                   <div className="icon-disc contact-disc">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
                       <circle cx="12" cy="12" r="10" />
                       <line x1="2" y1="12" x2="22" y2="12" />
                       <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
@@ -594,7 +691,14 @@ END:VCARD`;
                   className="soft-circle-action"
                 >
                   <div className="icon-disc wa-channel-disc">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
                       <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
                     </svg>
                   </div>
@@ -611,7 +715,14 @@ END:VCARD`;
                   className="soft-circle-action"
                 >
                   <div className="icon-disc fb-disc">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
                       <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
                     </svg>
                   </div>
@@ -628,20 +739,32 @@ END:VCARD`;
                   className="soft-circle-action"
                 >
                   <div className="icon-disc yt-disc">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
                       <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z" />
-                      <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" />
+                      <polygon
+                        points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"
+                        fill="currentColor"
+                      />
                     </svg>
                   </div>
                   <span className="icon-tag">YouTube</span>
                 </a>
               )}
+
             </div>
           </div>
         </div>
 
         {/* Map Card */}
         <div className="embedded-map-card">
+
           <a
             href={CLIENT_CONFIG.mapsDirectionUrl}
             target="_blank"
@@ -650,7 +773,8 @@ END:VCARD`;
           >
             <div className="address-highlight-box">
               <p className="agency-clean-address">
-                <strong>📍 Address:</strong> {CLIENT_CONFIG.fullAddress}
+                <strong>📍 Address:</strong>{" "}
+                {CLIENT_CONFIG.fullAddress}
               </p>
             </div>
 
@@ -688,14 +812,20 @@ END:VCARD`;
             Powered by <strong>{CLIENT_CONFIG.agencyName}</strong>
             <span className="mini-footer-dot">•</span>
             Get QR:
-            <a href={AGENCY_WA_LINK} target="_blank" rel="noreferrer">
+            <a
+              href={AGENCY_WA_LINK}
+              target="_blank"
+              rel="noreferrer"
+            >
               {CLIENT_CONFIG.agencyPhoneDisplay}
             </a>
           </span>
         </footer>
+
       </div>
 
       <style jsx global>{`
+
         /* =========================================
            ARTH COFFEE HOUSE
            WARM CREAM + BURGUNDY + COFFEE GOLD
@@ -707,27 +837,36 @@ END:VCARD`;
           padding: 0 !important;
           background: #f8ead7 !important;
           min-height: 100% !important;
+          overflow-x: hidden !important;
         }
 
-        /* Fixed full-screen background image */
+        /* =========================================
+           FIXED FULL BACKGROUND
+           COMPLETE IMAGE - NO CROPPING
+           ========================================= */
+
         .fixed-bg {
           position: fixed;
-          top: 0;
-          left: 0;
+          inset: 0;
           width: 100%;
           height: 100vh;
+          height: 100dvh;
+
           background-image: url('/bg.png');
-          background-size: cover;
-          background-position: center bottom;
+          background-size: 100% 100%;
+          background-position: center center;
           background-repeat: no-repeat;
+
           z-index: 0;
           pointer-events: none;
         }
 
         .soft-luxury-viewport {
           position: relative;
+          isolation: isolate;
           z-index: 1;
           min-height: 100vh;
+          min-height: 100dvh;
           background: transparent;
           padding: 10px 16px 24px;
           box-sizing: border-box;
@@ -867,64 +1006,143 @@ END:VCARD`;
           width: 100%;
         }
 
-        /* Soft cream chips */
+        /* =========================================
+           PREMIUM 3D FILTER CHIPS
+           ========================================= */
+
         .embossed-pill {
+          position: relative;
           border-radius: 999px;
-          padding: 5px 11px;
+          padding: 6px 12px;
           font-size: 11.5px;
-          background: rgba(255, 250, 240, 0.88);
+
+          background: linear-gradient(
+            145deg,
+            #fffdf8 0%,
+            #f7eddf 100%
+          );
+
           color: #725447;
           border: 1px solid #e4cfb0;
+
           cursor: pointer;
-          box-shadow: 0 2px 5px rgba(91, 48, 34, 0.08);
+
+          box-shadow:
+            0 4px 7px rgba(91, 48, 34, 0.10),
+            0 1px 2px rgba(91, 48, 34, 0.06),
+            inset 0 1px 1px rgba(255, 255, 255, 0.95),
+            inset 0 -1px 1px rgba(180, 145, 110, 0.12);
+
           transition:
+            transform 0.16s ease,
+            box-shadow 0.16s ease,
             background 0.18s ease,
             color 0.18s ease,
-            border-color 0.18s ease,
-            box-shadow 0.18s ease,
-            transform 0.16s ease;
+            border-color 0.18s ease;
+        }
+
+        .embossed-pill:hover {
+          transform: translateY(-2px);
+          box-shadow:
+            0 6px 10px rgba(91, 48, 34, 0.13),
+            inset 0 1px 1px rgba(255, 255, 255, 0.95);
         }
 
         .embossed-pill:active {
-          transform: scale(0.97);
+          transform: translateY(2px) scale(0.98);
+          box-shadow:
+            0 1px 3px rgba(91, 48, 34, 0.12),
+            inset 0 2px 4px rgba(91, 48, 34, 0.10);
         }
 
-        /* Burgundy selected chip */
         .embossed-pill.active {
-          background: #741c2a;
+          background: linear-gradient(
+            145deg,
+            #842c3b 0%,
+            #681522 100%
+          );
+
           color: #ffffff;
-          border-color: #741c2a;
-          box-shadow: 0 3px 9px rgba(116, 28, 42, 0.24);
+          border: 1px solid #5c1420;
+
+          box-shadow:
+            0 5px 10px rgba(116, 28, 42, 0.25),
+            0 2px 3px rgba(116, 28, 42, 0.15),
+            inset 0 1px 1px rgba(255, 255, 255, 0.22),
+            inset 0 -2px 2px rgba(55, 5, 15, 0.18);
         }
+
+        .embossed-pill.active:active {
+          transform: translateY(2px);
+          box-shadow:
+            0 1px 3px rgba(116, 28, 42, 0.20),
+            inset 0 2px 4px rgba(55, 5, 15, 0.18);
+        }
+
+        /* =========================================
+           PREMIUM 3D LANGUAGE SELECTOR
+           ========================================= */
 
         .capsule-lang-dock {
           display: inline-flex;
-          background: rgba(255, 250, 240, 0.92);
+          background: linear-gradient(
+            145deg,
+            #fffdf8,
+            #f4e7d8
+          );
+
           border-radius: 999px;
-          padding: 3px;
-          gap: 2px;
+          padding: 4px;
+          gap: 3px;
           margin: 0 auto 12px;
-          box-shadow: 0 3px 8px rgba(91, 48, 34, 0.09);
+
+          box-shadow:
+            0 5px 12px rgba(91, 48, 34, 0.11),
+            inset 0 1px 2px rgba(255, 255, 255, 0.95);
+
           border: 1px solid #e4cfb0;
         }
 
         .capsule-lang-btn {
-          padding: 5px 18px;
+          position: relative;
+          padding: 6px 19px;
           border-radius: 999px;
-          border: none;
+          border: 1px solid transparent;
           background: transparent;
           font-size: 10px;
           font-weight: 700;
           color: #806b5b;
           cursor: pointer;
+
+          transition:
+            transform 0.16s ease,
+            background 0.18s ease,
+            box-shadow 0.18s ease;
         }
 
-        /* Burgundy selected language */
         .capsule-lang-btn.active {
-          background: #741c2a;
+          background: linear-gradient(
+            145deg,
+            #842c3b,
+            #681522
+          );
+
           color: #ffffff;
-          box-shadow: 0 2px 7px rgba(116, 28, 42, 0.22);
+          border-color: #5c1420;
+
+          box-shadow:
+            0 4px 8px rgba(116, 28, 42, 0.23),
+            inset 0 1px 1px rgba(255, 255, 255, 0.20),
+            inset 0 -2px 2px rgba(55, 5, 15, 0.15);
         }
+
+        .capsule-lang-btn:active {
+          transform: translateY(2px);
+        }
+
+        /* =========================================
+           REVIEW CARD
+           ========================================= */
 
         .signature-review-box {
           width: 100%;
@@ -932,11 +1150,16 @@ END:VCARD`;
           border-radius: 24px;
           padding: 18px;
           box-sizing: border-box;
-          box-shadow: 0 10px 28px rgba(83, 47, 31, 0.13);
+
+          box-shadow:
+            0 10px 28px rgba(83, 47, 31, 0.13);
+
           margin-bottom: 16px;
           text-align: left;
+
           border: 1px solid rgba(198, 155, 92, 0.38);
           border-top: 4px solid #8b2635;
+
           color: #493027;
         }
 
@@ -965,22 +1188,60 @@ END:VCARD`;
           background: #9a3440;
         }
 
+        /* =========================================
+           PREMIUM 3D REWRITE BUTTON
+           ========================================= */
+
         .top-rewrite-btn {
+          position: relative;
           display: inline-flex;
           align-items: center;
-          padding: 4px 10px;
+
+          padding: 6px 13px;
           border-radius: 999px;
-          background: #f8eddf;
-          border: 1px solid #e4cfb0;
+
+          background: linear-gradient(
+            145deg,
+            #fffaf0 0%,
+            #f0dfca 100%
+          );
+
+          border: 1px solid #dfc8a7;
           color: #741c2a;
+
           font-size: 10.5px;
-          font-weight: 650;
+          font-weight: 700;
+
           cursor: pointer;
-          transition: transform 0.15s ease;
+
+          box-shadow:
+            0 3px 6px rgba(83, 47, 31, 0.10),
+            inset 0 1px 1px rgba(255, 255, 255, 0.95),
+            inset 0 -1px 2px rgba(145, 100, 65, 0.12);
+
+          transition:
+            transform 0.16s ease,
+            box-shadow 0.16s ease,
+            background 0.18s ease;
         }
 
-        .top-rewrite-btn:active {
-          transform: scale(0.95);
+        .top-rewrite-btn:hover:not(:disabled) {
+          transform: translateY(-2px);
+          box-shadow:
+            0 5px 9px rgba(83, 47, 31, 0.14),
+            inset 0 1px 1px rgba(255, 255, 255, 0.95);
+        }
+
+        .top-rewrite-btn:active:not(:disabled) {
+          transform: translateY(2px);
+          box-shadow:
+            0 1px 2px rgba(83, 47, 31, 0.12),
+            inset 0 2px 3px rgba(145, 100, 65, 0.15);
+        }
+
+        .top-rewrite-btn:disabled {
+          opacity: 0.55;
+          cursor: not-allowed;
         }
 
         .review-display-zone {
@@ -1043,32 +1304,74 @@ END:VCARD`;
           margin: 6px 0 10px;
         }
 
+        /* =========================================
+           PREMIUM 3D MAIN COPY BUTTON
+           ========================================= */
+
         .full-luxury-copy-btn {
+          position: relative;
+          overflow: hidden;
+
           width: 100%;
           height: 50px;
           border-radius: 999px;
-          background: #741c2a;
-          border: none;
+
+          background: linear-gradient(
+            145deg,
+            #8a2d3d 0%,
+            #741c2a 48%,
+            #5e1522 100%
+          );
+
+          border: 1px solid #5e1522;
           color: #ffffff;
+
           font-size: 12px;
           font-weight: 750;
           cursor: pointer;
-          box-shadow: 0 6px 16px rgba(116, 28, 42, 0.25);
-          transition: transform 0.15s ease, background 0.18s ease, box-shadow 0.18s ease;
+
+          box-shadow:
+            0 7px 13px rgba(116, 28, 42, 0.24),
+            0 3px 5px rgba(83, 20, 30, 0.16),
+            inset 0 1px 1px rgba(255, 255, 255, 0.23),
+            inset 0 -2px 3px rgba(45, 5, 12, 0.20);
+
+          transition:
+            transform 0.16s ease,
+            background 0.18s ease,
+            box-shadow 0.16s ease,
+            opacity 0.18s ease;
+        }
+
+        .full-luxury-copy-btn:hover:not(:disabled) {
+          transform: translateY(-2px);
+
+          box-shadow:
+            0 10px 17px rgba(116, 28, 42, 0.27),
+            0 4px 7px rgba(83, 20, 30, 0.16),
+            inset 0 1px 1px rgba(255, 255, 255, 0.25);
+        }
+
+        .full-luxury-copy-btn:active:not(:disabled) {
+          transform: translateY(2px);
+
+          box-shadow:
+            0 2px 4px rgba(116, 28, 42, 0.20),
+            inset 0 3px 5px rgba(45, 5, 12, 0.20);
         }
 
         .full-luxury-copy-btn.copied {
-          background: #5f1824;
-          box-shadow: 0 5px 14px rgba(95, 24, 36, 0.24);
+          background: linear-gradient(
+            145deg,
+            #792432,
+            #5f1824
+          );
         }
 
         .full-luxury-copy-btn:disabled {
           opacity: 0.6;
           cursor: not-allowed;
-        }
-
-        .full-luxury-copy-btn:active:not(:disabled) {
-          transform: scale(0.98);
+          box-shadow: none;
         }
 
         .card-disclaimer-note {
@@ -1079,14 +1382,23 @@ END:VCARD`;
           font-style: italic;
         }
 
+        /* =========================================
+           QUICK ACTIONS CARD
+           ========================================= */
+
         .quick-actions-card {
           width: 100%;
           background: rgba(255, 250, 240, 0.93);
           border-radius: 22px;
           padding: 18px 12px;
           box-sizing: border-box;
+
           border: 1px solid rgba(198, 155, 92, 0.35);
-          box-shadow: 0 8px 23px rgba(83, 47, 31, 0.11);
+
+          box-shadow:
+            0 8px 23px rgba(83, 47, 31, 0.11),
+            inset 0 1px 1px rgba(255, 255, 255, 0.85);
+
           margin-bottom: 16px;
         }
 
@@ -1112,76 +1424,257 @@ END:VCARD`;
           width: 100%;
         }
 
+        /* =========================================
+           PREMIUM 3D ACTION BUTTONS
+           ========================================= */
+
         .soft-circle-action {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 5px;
+          justify-content: flex-start;
+          gap: 7px;
+
           text-decoration: none !important;
           color: #665044;
+
           background: transparent;
           border: none;
+
           cursor: pointer;
-          padding: 0;
-          transition: transform 0.15s ease;
+          padding: 3px 4px 5px;
+
+          -webkit-tap-highlight-color: transparent;
+
+          transition:
+            transform 0.18s ease,
+            color 0.18s ease;
+        }
+
+        .soft-circle-action:hover {
+          transform: translateY(-3px);
         }
 
         .soft-circle-action:active {
-          transform: scale(0.92);
+          transform: translateY(2px) scale(0.97);
+        }
+
+        .soft-circle-action:focus-visible {
+          outline: 2px solid #a87535;
+          outline-offset: 4px;
+          border-radius: 14px;
         }
 
         .icon-disc {
-          width: 50px;
-          height: 50px;
+          position: relative;
+
+          width: 54px;
+          height: 54px;
           border-radius: 50%;
-          background: #f8eddf;
+
+          background: linear-gradient(
+            145deg,
+            #fffdf8 0%,
+            #f4e5d3 100%
+          );
+
           display: grid;
           place-items: center;
-          box-shadow: 0 4px 11px rgba(83, 47, 31, 0.09);
-          border: 1px solid #e4cfb0;
-          transition: all 0.2s ease;
+
+          border: 1px solid #d9bd99;
+
+          box-shadow:
+            0 7px 12px rgba(83, 47, 31, 0.13),
+            0 2px 4px rgba(83, 47, 31, 0.08),
+            inset 0 2px 3px rgba(255, 255, 255, 0.95),
+            inset 0 -2px 3px rgba(145, 100, 65, 0.13);
+
+          transition:
+            transform 0.18s ease,
+            box-shadow 0.18s ease,
+            background 0.18s ease,
+            border-color 0.18s ease;
         }
 
+        /* Soft inner highlight */
+        .icon-disc::before {
+          content: "";
+          position: absolute;
+          top: 3px;
+          left: 7px;
+          right: 7px;
+          height: 35%;
+          border-radius: 50%;
+
+          background: linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.45),
+            rgba(255, 255, 255, 0)
+          );
+
+          pointer-events: none;
+        }
+
+        /* Icon depth */
         .icon-disc svg {
-          width: 20px;
-          height: 20px;
+          position: relative;
+          z-index: 1;
+
+          width: 21px;
+          height: 21px;
+
           stroke: #75432e;
-          transition: stroke 0.2s ease;
+          stroke-width: 1.8;
+
+          filter: drop-shadow(
+            0 1px 0 rgba(255, 255, 255, 0.65)
+          );
+
+          transition:
+            stroke 0.18s ease,
+            transform 0.18s ease;
         }
 
-        .whatsapp-disc:hover { background: #25d366; border-color: #25d366; }
-        .whatsapp-disc:hover svg { stroke: #ffffff; }
+        .soft-circle-action:hover .icon-disc {
+          transform: translateY(-2px);
 
-        .call-disc:hover { background: #007aff; border-color: #007aff; }
-        .call-disc:hover svg { stroke: #ffffff; }
-
-        .contact-disc:hover { background: #741c2a; border-color: #741c2a; }
-        .contact-disc:hover svg { stroke: #ffffff; }
-
-        .map-disc:hover { background: #ea4335; border-color: #ea4335; }
-        .map-disc:hover svg { stroke: #ffffff; }
-
-        .insta-disc:hover {
-          background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
-          border-color: transparent;
+          box-shadow:
+            0 10px 16px rgba(83, 47, 31, 0.16),
+            0 3px 5px rgba(83, 47, 31, 0.09),
+            inset 0 2px 3px rgba(255, 255, 255, 0.95);
         }
 
-        .insta-disc:hover svg { stroke: #ffffff; }
+        .soft-circle-action:active .icon-disc {
+          transform: translateY(2px);
 
-        .wa-channel-disc:hover { background: #25d366; border-color: #25d366; }
-        .wa-channel-disc:hover svg { stroke: #ffffff; }
-
-        .fb-disc:hover { background: #1877f2; border-color: #1877f2; }
-        .fb-disc:hover svg { stroke: #ffffff; }
-
-        .yt-disc:hover { background: #ff0000; border-color: #ff0000; }
-        .yt-disc:hover svg { stroke: #ffffff; color: #ffffff; }
+          box-shadow:
+            0 2px 4px rgba(83, 47, 31, 0.13),
+            inset 0 3px 5px rgba(145, 100, 65, 0.14);
+        }
 
         .icon-tag {
           font-size: 9.5px;
           font-weight: 700;
           color: #665044;
+          line-height: 1.3;
+          white-space: nowrap;
+          transition: color 0.18s ease;
         }
+
+        /* WhatsApp */
+        .whatsapp-disc:hover {
+          background: linear-gradient(145deg, #42e486, #1aaf58);
+          border-color: #169c4d;
+          box-shadow:
+            0 7px 14px rgba(37, 211, 102, 0.25),
+            inset 0 2px 3px rgba(255, 255, 255, 0.35);
+        }
+
+        .whatsapp-disc:hover svg {
+          stroke: #ffffff;
+        }
+
+        /* Call */
+        .call-disc:hover {
+          background: linear-gradient(145deg, #45a4ff, #0874d1);
+          border-color: #0868bd;
+          box-shadow:
+            0 7px 14px rgba(0, 122, 255, 0.22),
+            inset 0 2px 3px rgba(255, 255, 255, 0.35);
+        }
+
+        .call-disc:hover svg {
+          stroke: #ffffff;
+        }
+
+        /* Contact and Website */
+        .contact-disc:hover {
+          background: linear-gradient(145deg, #9b4250, #741c2a);
+          border-color: #641622;
+          box-shadow:
+            0 7px 14px rgba(116, 28, 42, 0.23),
+            inset 0 2px 3px rgba(255, 255, 255, 0.28);
+        }
+
+        .contact-disc:hover svg {
+          stroke: #ffffff;
+        }
+
+        /* Directions */
+        .map-disc:hover {
+          background: linear-gradient(145deg, #ff776b, #e34539);
+          border-color: #cf382e;
+          box-shadow:
+            0 7px 14px rgba(234, 67, 53, 0.22),
+            inset 0 2px 3px rgba(255, 255, 255, 0.30);
+        }
+
+        .map-disc:hover svg {
+          stroke: #ffffff;
+        }
+
+        /* Instagram */
+        .insta-disc:hover {
+          background: radial-gradient(
+            circle at 30% 107%,
+            #fdf497 0%,
+            #fdf497 5%,
+            #fd5949 45%,
+            #d6249f 60%,
+            #285AEB 90%
+          );
+
+          border-color: #d6249f;
+
+          box-shadow:
+            0 7px 14px rgba(214, 36, 159, 0.20),
+            inset 0 2px 3px rgba(255, 255, 255, 0.30);
+        }
+
+        .insta-disc:hover svg {
+          stroke: #ffffff;
+        }
+
+        /* WhatsApp Channel */
+        .wa-channel-disc:hover {
+          background: linear-gradient(145deg, #42e486, #1aaf58);
+          border-color: #169c4d;
+        }
+
+        .wa-channel-disc:hover svg {
+          stroke: #ffffff;
+        }
+
+        /* Facebook */
+        .fb-disc:hover {
+          background: linear-gradient(145deg, #4095ff, #1877f2);
+          border-color: #1266cf;
+          box-shadow:
+            0 7px 14px rgba(24, 119, 242, 0.22),
+            inset 0 2px 3px rgba(255, 255, 255, 0.30);
+        }
+
+        .fb-disc:hover svg {
+          stroke: #ffffff;
+        }
+
+        /* YouTube */
+        .yt-disc:hover {
+          background: linear-gradient(145deg, #ff4848, #cc0000);
+          border-color: #b00000;
+          box-shadow:
+            0 7px 14px rgba(255, 0, 0, 0.20),
+            inset 0 2px 3px rgba(255, 255, 255, 0.30);
+        }
+
+        .yt-disc:hover svg {
+          stroke: #ffffff;
+          color: #ffffff;
+        }
+
+        /* =========================================
+           MAP CARD
+           ========================================= */
 
         .embedded-map-card {
           width: 100%;
@@ -1189,8 +1682,12 @@ END:VCARD`;
           border-radius: 22px;
           padding: 14px 16px;
           box-sizing: border-box;
+
           border: 1px solid rgba(198, 155, 92, 0.35);
-          box-shadow: 0 7px 20px rgba(83, 47, 31, 0.09);
+
+          box-shadow:
+            0 7px 20px rgba(83, 47, 31, 0.09);
+
           margin-bottom: 12px;
           text-align: left;
         }
@@ -1204,9 +1701,11 @@ END:VCARD`;
           align-items: center;
           justify-content: center;
           gap: 6px;
+
           font-size: 11.5px;
           font-weight: 800;
           color: #741c2a;
+
           margin-bottom: 8px;
         }
 
@@ -1244,7 +1743,10 @@ END:VCARD`;
           text-align: center;
         }
 
-        /* Mini Footer */
+        /* =========================================
+           MINI FOOTER
+           ========================================= */
+
         .mini-footer {
           width: 100%;
           display: flex;
@@ -1258,10 +1760,13 @@ END:VCARD`;
           justify-content: center;
           flex-wrap: wrap;
           gap: 4px;
+
           padding: 5px 12px;
+
           border: 1px solid #e4cfb0;
           border-radius: 999px;
           background: rgba(255, 250, 240, 0.94);
+
           font-size: 8.5px;
           letter-spacing: 0.3px;
           color: #897667;
@@ -1282,6 +1787,33 @@ END:VCARD`;
           font-weight: 700;
           text-decoration: none;
         }
+
+        /* =========================================
+           ACCESSIBILITY & MOBILE TOUCH
+           ========================================= */
+
+        button,
+        a {
+          -webkit-tap-highlight-color: transparent;
+        }
+
+        button:focus-visible,
+        a:focus-visible {
+          outline: 2px solid #a87535;
+          outline-offset: 3px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          *,
+          *::before,
+          *::after {
+            scroll-behavior: auto !important;
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+          }
+        }
+
       `}</style>
     </main>
   );
